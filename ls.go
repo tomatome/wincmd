@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/disiqueira/gotree"
-	"github.com/kbinani/win"
+	"github.com/tomatome/win"
 )
 
 type LS struct {

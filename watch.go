@@ -46,6 +46,12 @@ func main() {
 	flex.AddItem(statusBar, 1, 1, true)
 	flex.AddItem(viewer, 0, 1, false)
 	app.SetRoot(flex, true)
+	screen, err := tcell.NewScreen()
+	if err != nil {
+		fmt.Println(err)
+	}
+	screen.Init()
+	app.SetScreen(screen)
 	go func() {
 		for {
 			buf.Reset()
@@ -66,7 +72,7 @@ func main() {
 			buf.WriteString("\n" + c)
 
 			app.QueueUpdateDraw(func() {
-				viewer.Clear()
+				screen.Clear()
 				viewer.SetText(tview.TranslateANSI(buf.String()))
 				elapsed.SetText(fmt.Sprintf("%v", time.Now().Format("15:04:05 2006/1/2")))
 			})
@@ -74,7 +80,7 @@ func main() {
 		}
 	}()
 
-	err := app.Run()
+	err = app.Run()
 	if err != nil {
 		panic(err)
 	}
