@@ -8,12 +8,11 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-	"syscall"
 )
 
 var (
-	kernel32 = syscall.NewLazyDLL("kernel32.dll")
-	proc     = kernel32.NewProc("SetConsoleTextAttribute")
+//kernel32 = syscall.NewLazyDLL("kernel32.dll")
+//proc     = kernel32.NewProc("SetConsoleTextAttribute")
 )
 
 type FileContent struct {
@@ -34,7 +33,6 @@ var wg sync.WaitGroup
 func init() {
 	ResultCH = make(chan FileContent, 10000)
 }
-
 
 func main() {
 	flag.Bool("w", false, "find word")
@@ -62,11 +60,11 @@ func main() {
 			FindDir(v)
 			continue
 		}
-		if strings.HasSuffix(item.Name(), ".exe") ||
-			strings.HasSuffix(item.Name(), ".tar") ||
-			strings.HasSuffix(item.Name(), ".tar.gz") ||
-			strings.HasSuffix(item.Name(), ".zip") ||
-			strings.HasSuffix(item.Name(), ".rar") {
+		if strings.HasSuffix(f.Name(), ".exe") ||
+			strings.HasSuffix(f.Name(), ".tar") ||
+			strings.HasSuffix(f.Name(), ".tar.gz") ||
+			strings.HasSuffix(f.Name(), ".zip") ||
+			strings.HasSuffix(f.Name(), ".rar") {
 			continue
 		}
 		wg.Add(1)
@@ -152,17 +150,14 @@ func FindFile(file string) {
 	wg.Done()
 }
 
-
-func 
-
 func Color(v, a string) {
 	idx := strings.Index(v, a)
 	fmt.Printf("%s", v[:idx])
-	handle, _, _ := proc.Call(uintptr(syscall.Stdout), uintptr(12)) //12 Red light
+	//handle, _, _ := proc.Call(uintptr(syscall.Stdout), uintptr(12)) //12 Red light
 	fmt.Printf(a)
 
-	handle, _, _ = proc.Call(uintptr(syscall.Stdout), uintptr(7)) //White dark
-	CloseHandle := kernel32.NewProc("CloseHandle")
-	CloseHandle.Call(handle)
+	//handle, _, _ = proc.Call(uintptr(syscall.Stdout), uintptr(7)) //White dark
+	//CloseHandle := kernel32.NewProc("CloseHandle")
+	//CloseHandle.Call(handle)
 	fmt.Printf("%s\n", v[idx+len(a):])
 }
