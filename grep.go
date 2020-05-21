@@ -35,10 +35,10 @@ func init() {
 }
 
 func main() {
-	flag.Bool("w", false, "find word")
+	flag.BoolVar(&word, "w", true, "find word")
 	flag.Parse()
 	if flag.NArg() == 0 {
-		fmt.Println("Usage: grep content...")
+		fmt.Println("Usage: grep content [dir]...")
 		os.Exit(-1)
 	}
 	pattern = flag.Arg(0)

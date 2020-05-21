@@ -17,6 +17,6 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println("successfully")
+		fmt.Println(flag.Args()[0], ": Remove all successfully")
 	}
 }

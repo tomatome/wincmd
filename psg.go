@@ -81,7 +81,7 @@ func main() {
 	}
 
 	if Tree {
-		PrintTree(procs, Pid)
+		PrintTree(procs, Name, Pid)
 		os.Exit(0)
 	}
 
@@ -142,6 +142,14 @@ func PrintTree(procs []Process, pid int) {
 	if pid != -1 {
 		if v, ok := Pmaps[pid]; ok {
 			fmt.Println(v.Tree(Pmaps).Print())
+		}
+	} else if Name != "" {
+		for _, v := range procs {
+			if strings.Contains(v.Name, Name) {
+				if v1, ok := Pmaps[v.pid]; ok {
+					fmt.Println(v1.Tree(Pmaps).Print())
+				}
+			}
 		}
 	} else {
 		fmt.Println(host.Tree(Pmaps).Print())
