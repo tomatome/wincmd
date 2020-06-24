@@ -196,7 +196,8 @@ func (c *Client) UploadFile(localFile, remote string) error {
 		remoteFile = remote
 	}
 
-	log.Println("Upload:", localFile, "-->", remoteFile)
+	info, _ = os.Stat(localFile)
+	log.Printf("Upload: %s(%s) --> %s\n", localFile, Size(info.Size()), remoteFile)
 
 	if _, err := c.Stat(remoteDir); err != nil {
 		log.Println("Mkdir:", remoteDir)
@@ -307,7 +308,8 @@ func (c *Client) downloadFile(remoteFile, local string) error {
 
 	}
 
-	log.Println("Download:", localFile, "<--", remoteFile)
+	info, _ := c.Stat(remoteFile)
+	log.Printf("Download: %s <-- %s(%s)", localFile, remoteFile, Size(info.Size()))
 
 	if _, err := os.Stat(local); err != nil {
 		if err = os.MkdirAll(localDir, os.ModePerm); err != nil {
@@ -469,7 +471,7 @@ func main() {
 	c := createClient(path, pw)
 	c.Port = p
 	c.Passwd = pw
-	fmt.Println(c)
+	//fmt.Println(c.User)
 	c.newLink()
 
 	switch opcode {
@@ -488,4 +490,23 @@ func main() {
 	} else {
 		log.Println("Successful")
 	}
+}
+func Size(size int64) string {
+	s := float64(size)
+	d := "B"
+
+	if s > 1024 {
+		s = s / 1024.0
+		d = "K"
+	}
+
+	if s > 1024 {
+		s = s / 1024.0
+		d = "M"
+	}
+	if s > 1024 {
+		s = s / 1024.0
+		d = "G"
+	}
+	return fmt.Sprintf("%.2f %s", s, d)
 }
